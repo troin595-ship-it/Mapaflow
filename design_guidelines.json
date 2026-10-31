@@ -1,0 +1,165 @@
+{
+  "project_identity": {
+    "name": "RotaFlow BH - Maps Clone para Técnicos de Campo",
+    "type": "mobile_web_app / map navigation tool",
+    "locale": "pt-BR",
+    "target_audience": "Técnicos de campo, motoristas de serviço e gestores de frota em Belo Horizonte",
+    "fixed_base": {
+      "address": "Rua Descalvado 636, Renascença, Belo Horizonte - MG",
+      "lat": -19.8837,
+      "lng": -43.9372,
+      "name": "Base Operacional Renascença"
+    },
+    "brand_voice": "Alta precisão, comandos táteis velozes, visual tático de centro de comando urbano sem copiar branding do Google"
+  },
+  "typography": {
+    "font_family_heading": "'Plus Jakarta Sans', -apple-system, sans-serif",
+    "font_family_body": "'Plus Jakarta Sans', -apple-system, sans-serif",
+    "font_family_mono": "'JetBrains Mono', 'Fira Code', monospace",
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
+    "rules": {
+      "headings": "font-bold tracking-tight text-slate-900 dark:text-slate-100",
+      "numbers_and_etas": "font-mono font-bold tracking-normal",
+      "maneuver_banner_text": "text-lg md:text-xl font-extrabold tracking-tight leading-tight",
+      "h1_hero": "text-3xl sm:text-4xl lg:text-5xl font-extrabold",
+      "h2_section": "text-xl sm:text-2xl font-bold",
+      "h3_card": "text-lg font-semibold",
+      "body_text": "text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300",
+      "caption": "text-xs font-medium text-slate-500 dark:text-slate-400"
+    }
+  },
+  "colors": {
+    "theme": "Dark Mode & Light Mode dual-toggle with Tactical Dark as default for navigation comfort",
+    "palette": {
+      "background_dark": "#0B0F17",
+      "surface_dark": "#131B2A",
+      "surface_dark_glass": "rgba(19, 27, 42, 0.85)",
+      "border_dark": "rgba(255, 255, 255, 0.12)",
+      "background_light": "#F8FAFC",
+      "surface_light": "#FFFFFF",
+      "surface_light_glass": "rgba(255, 255, 255, 0.88)",
+      "border_light": "rgba(0, 0, 0, 0.08)",
+      "primary": "#2563EB",
+      "primary_hover": "#1D4ED8",
+      "accent_emerald": "#10B981",
+      "accent_amber": "#F59E0B",
+      "accent_rose": "#EF4444",
+      "route_polyline_main": "#3B82F6",
+      "route_polyline_alt": "#64748B",
+      "route_polyline_traffic_heavy": "#EF4444",
+      "route_polyline_traffic_moderate": "#F59E0B",
+      "base_marker_color": "#8B5CF6"
+    },
+    "rules": {
+      "forbidden_colors": ["#7351B7", "#1B93A4"],
+      "contrast": "Ensure text contrast meets WCAG AA standards (4.5:1 minimum for normal text, 3:1 for large stats).",
+      "hover_states": "Hover states must explicitly set text color (e.g. hover:bg-slate-800 hover:text-white)."
+    }
+  },
+  "layout_and_responsive": {
+    "file_extension_notice": "CRITICAL: The codebase uses React JavaScript files (.js), NOT TypeScript (.tsx). Maintain standard JS component structure.",
+    "desktop": {
+      "layout_structure": "Split View with left collapsible floating glass sidebar (width: 420px) + full-bleed 3D Map viewport",
+      "sidebar_components": [
+        "Header with Brand Logo (RotaFlow), search input with Places Autocomplete, theme toggle, and user profile / logout button",
+        "Base operational card showing Rua Descalvado 636, Renascença - BH",
+        "Draggable/Reorderable Stops List with reorder handles, remove buttons, and status indicator",
+        "Action Bar: 'Otimizar Ordem das Paradas' button, 'Adicionar Parada' button, and 'Calcular Rota'",
+        "Route Alternatives Comparison Panel (Distance in km, Duration in mins, Toll estimated cost R$, Traffic status)",
+        "Leg-by-Leg breakdown (Trechos entre paradas)",
+        "Saved Routes (Roteiros Salvos) list with quick load buttons",
+        "Navigation Mode Control Trigger"
+      ]
+    },
+    "mobile": {
+      "layout_structure": "Full-screen Map viewport with overlay elements: Floating Top Maneuver Banner (when navigating), Floating Bottom Sheet with expandable drawer, Recenter Floating Action Button, Tilt 3D Toggle, Navigation Controls",
+      "bottom_sheet_states": [
+        "Collapsed (preview ETA, next stop name, start navigation button)",
+        "Half-expanded (stops list, route stats)",
+        "Fully-expanded (complete route management, leg details, alternatives)"
+      ]
+    }
+  },
+  "map_features_and_google_apis": {
+    "engine": "Google Maps JavaScript API Vector Map with fallback rich simulated Vector Map canvas when API key is pending or offline",
+    "map_controls": [
+      "Map Mode Switcher: Mapa Vetorial, Satélite HD, Visão 3D Terreno/Edifícios, Camada de Trânsito ao Vivo",
+      "Compass & Tilt Rotation (0° to 45° tilt slider/button)",
+      "Recenter / Follow Mode GPS toggle",
+      "Zoom In / Zoom Out controls"
+    ],
+    "google_routes_api_integration": {
+      "features": [
+        "Real-time routing polylines with traffic-colored segments (Green/Yellow/Red)",
+        "Comparative alternative routes rendered with dashed gray overlays",
+        "Toll calculation display (Estimativa de Pedágios R$)",
+        "Leg-by-Leg details with distance and travel time per segment",
+        "Stops Order Optimization engine (TSP heuristic / Google Directions optimizeWaypoints)"
+      ]
+    },
+    "turn_by_turn_navigation": {
+      "features": [
+        "Live simulated GPS movement following route polylines at controllable speed (1x, 2x, 5x)",
+        "Next maneuver top banner: Turn icon (Left, Right, Keep Right, Roundabout, U-turn, Straight), distance to maneuver (e.g., 'Em 200m'), street name (e.g., 'Vire à esquerda na Av. Cristiano Machado')",
+        "Bottom ETA Bar: Total remaining distance (km), total remaining time (min), estimated arrival clock time (e.g., 'ETA 14:35'), progress bar",
+        "Off-route detection simulation & automatic re-routing trigger ('Recalculando rota...')",
+        "Navigation state actions: Pausar, Retomar, Avançar para Próxima Parada, Voltar à Visão Geral",
+        "Destination reached congratulatory modal with summary stats"
+      ]
+    }
+  },
+  "animations_and_interactions": {
+    "library": "framer-motion for React JS",
+    "patterns": [
+      "Side panel slide in/out: initial={{ x: -400, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: 'spring', damping: 25 }}",
+      "Maneuver Banner drop down: initial={{ y: -100, opacity: 0 }} animate={{ y: 0, opacity: 1 }}",
+      "Route drawing effect: Animated SVG polyline path length reveal",
+      "Interactive list item drag & drop reordering animation with spring transition",
+      "Destination Arrival Celebration Modal scale-up entrance with confetti or pulse effect",
+      "Skeletons for route loading state and search autocomplete results"
+    ]
+  },
+  "auth_and_state": {
+    "login_screen": {
+      "title": "Acesso RotaFlow BH",
+      "subtitle": "Sistema de Navegação e Otimização para Técnicos",
+      "fields": ["E-mail do Técnico", "Senha de Acesso"],
+      "features": "Validation, error toast, remember session simulation, default quick-login button ('Entrar como Técnico Exemplo')"
+    },
+    "no_os_module": "DO NOT create any Order of Service (OS) management modules or tickets. Keep strict focus on Map, Route Optimization, Stop Management, Saved Routes, and Turn-by-Turn GPS Navigation."
+  },
+  "accessibility_and_testing": {
+    "data_testid_policy": "MANDATORY: All buttons, inputs, tabs, map controls, stop items, maneuver banners, and status badges MUST include data-testid in kebab-case format.",
+    "sample_test_ids": [
+      "data-testid=\"login-email-input\"",
+      "data-testid=\"login-password-input\"",
+      "data-testid=\"login-submit-button\"",
+      "data-testid=\"quick-login-button\"",
+      "data-testid=\"search-stop-input\"",
+      "data-testid=\"add-stop-button\"",
+      "data-testid=\"optimize-route-button\"",
+      "data-testid=\"calculate-route-button\"",
+      "data-testid=\"stop-item-0\"",
+      "data-testid=\"stop-remove-button-0\"",
+      "data-testid=\"route-option-primary\"",
+      "data-testid=\"route-option-alternative-1\"",
+      "data-testid=\"start-navigation-button\"",
+      "data-testid=\"pause-navigation-button\"",
+      "data-testid=\"recenter-gps-button\"",
+      "data-testid=\"map-mode-satellite\"",
+      "data-testid=\"map-mode-3d-tilt\"",
+      "data-testid=\"saved-routes-tab\""
+    ]
+  },
+  "image_urls": {
+    "technician_avatar": "https://images.unsplash.com/photo-1740252117044-2af197eea287?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwxfHx0ZWNobmljaWFuJTIwYXZhdGFyJTIwcHJvZmVzc2lvbmFsJTIwbWFwfGVufDB8fHx8MTc5MzQ2OTg5NHww&ixlib=rb-4.1.0&q=85",
+    "belo_horizonte_skyline": "https://images.unsplash.com/photo-1611703623235-832548772533?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA0MTJ8MHwxfHNlYXJjaHwxfHxiZWxvJTIwaG9yaXpvbnRlJTIwc2t5bGluZSUyMGNpdHl8ZW58MHx8fHwxNzkzNDY5ODk3fDA&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Read /app/design_guidelines.json completely before writing front-end code.",
+    "Ensure all components use standard JavaScript (.js) syntax as configured in the project.",
+    "Implement Google Maps API script loader with graceful fallback if window.google is unavailable or API key is not configured, providing a seamless interactive mock vector map.",
+    "Always include data-testid on interactive elements for reliable automated testing.",
+    "Set fixed base address as Rua Descalvado 636, Renascença, Belo Horizonte - MG as the default starting origin."
+  ]
+}
