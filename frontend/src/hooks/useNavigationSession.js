@@ -82,7 +82,8 @@ export function useNavigationSession({ base, stops, returnToBase, ensureSaved, c
     try {
       const heading = from.heading != null ? Math.round(from.heading) % 360 : undefined;
       const { data } = await api.post("/routes/nav-leg", { origin: { lat: from.lat, lng: from.lng }, heading, destination: { lat: tgt.lat, lng: tgt.lng } });
-      setLeg(data.route);
+      const l = data.route.legs[0];
+      setLeg({ ...l, polyline: l.polyline || data.route.polyline, traffic: l.traffic?.length ? l.traffic : data.route.traffic });
       setNotice(null);
       setPhase("guiding");
       if (reason === "reroute") toast.success("Rota recalculada");

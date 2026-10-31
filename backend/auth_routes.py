@@ -55,6 +55,26 @@ async def login(body: LoginIn, request: Request, response: Response):
     return public_user(user)
 
 
+class RegisterIn(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    email: EmailStr
+    password: str = Field(min_length=6, max_length=200)
+
+
+@router.post("/auth/register")
+async def register(body: RegisterIn, response: Response):
+    email = body.email.lower()
+    if await db.users.find_one({"email": email}):
+        raise HTTPException(status_code=400, detail="Já existe uma conta com este e-mail")
+    doc = {"email": email, "name": body.name.strip(), "role": "tecnico",
+           "password_hash": hash_password(body.password), "created_at": now_iso()}
+    res = await db.users.insert_one(doc)
+    doc["_id"] = res.inserted_id
+    uid = str(res.inserted_id)
+    _set_cookies(response, create_access_token(uid, email), create_refresh_token(uid))
+    return public_user(doc)
+
+
 @router.post("/auth/logout")
 async def logout(response: Response):
     response.delete_cookie("access_token", path="/")

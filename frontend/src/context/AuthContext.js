@@ -20,12 +20,17 @@ export function AuthProvider({ children }) {
     setUser(data);
   }, []);
 
+  const register = useCallback(async (name, email, password) => {
+    const { data } = await api.post("/auth/register", { name, email, password });
+    setUser(data);
+  }, []);
+
   const logout = useCallback(async () => {
     await api.post("/auth/logout").catch(() => {});
     setUser(false);
   }, []);
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);
